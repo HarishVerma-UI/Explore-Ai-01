@@ -1,0 +1,5 @@
+.env
+ai-env/
+frontend/.gitignore
+frontend/node_modules/
+mlruns/
