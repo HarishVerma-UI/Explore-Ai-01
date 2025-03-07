@@ -22,19 +22,19 @@ Download and install Python from python.org
 Ensure you check the option Add Python to PATH during installation
 
 ## Step 2: Clone the Repository
-bashCopygit clone https://github.com/HarishVerma-UI/Explore-Ai-01
+git clone https://github.com/HarishVerma-UI/Explore-Ai-01
 
 ## Step 3: Navigate to the Project Folder
-bashCopycd Explore-Ai-01
+cd Explore-Ai-01
 
 ## Step 4: Create a Virtual Environment
-bashCopypython -m venv ai-env
+python -m venv ai-env
 
 ## Step 5: Activate the Virtual Environment
-bashCopy.\ai-env\Scripts\activate
+.\ai-env\Scripts\activate
 
 ## Step 6: Install Required Libraries
-bashCopypip install -r requirements.txt
+pip install -r req.txt
 
 ## Step 7: Create a Groq Account
 
@@ -46,11 +46,11 @@ Create a .env file in the project root with the following:
 CopyGROQ_API_KEY="your_api_key_here"
 MLFLOW_TRACKING_URI="http://localhost:5000"
 
-## Step 9: Run the Backend Server
-bashCopycd backend
+## Step 9: Run the Backend Server 
+cd backend
 uvicorn main:app --reload
 
-## Step 10: Test the API
+## Step 10: Test backend API
 Using curl:
 bashCopycurl -X POST http://localhost:8000/start-session
 Expected response:
@@ -64,23 +64,23 @@ You can send messages using the session ID.
 Download and install Node.js from nodejs.org
 
 ## Step 2: Navigate to the Frontend Directory
-bashCopycd frontend
+cd frontend
 
 ## Step 3: Install Dependencies
-bashCopynpm install
+npm install
 
 ## Step 4: Start the Frontend Development Server
-bashCopynpm start
+npm start
 The application should now be running at http://localhost:3000
 
 ## Additional Setup (Optional)
 MLflow Setup
 
 ## Step 1: Install MLflow
-bashCopypip install mlflow
+pip install mlflow
 
 ## Step 2: Start MLflow Server
-bashCopymlflow server --host 127.0.0.1 --port 5000
+mlflow server --host 127.0.0.1 --port 5000
 
 ## Step 3: Access MLflow UI
 Open your browser and navigate to http://localhost:5000
