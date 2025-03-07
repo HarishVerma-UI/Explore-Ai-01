@@ -41,12 +41,13 @@ Ensure you check the option Add Python to PATH during installation
 
 ## Step 7: Create a Groq Account
 
-Visit Groq Cloud and sign up or log in
+Visit Groq https://console.groq.com/keys  Cloud and sign up or log in
 After logging in, generate an API key
 
 ## Step 8: Configure Environment Variables
 Create a .env file in the project root with the following:
-```CopyGROQ_API_KEY="your_api_key_here"
+```
+GROQ_API_KEY="<API KEY>"
 MLFLOW_TRACKING_URI="http://localhost:5000"
 ```
 
