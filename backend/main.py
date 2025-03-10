@@ -52,6 +52,41 @@ class ChatResponse(BaseModel):
 class SessionResponse(BaseModel):
     session_id: str
 
+class UpdateDefaultModelRequest(BaseModel):
+    model: str
+
+# Default model
+default_model = "llama3-70b-8192"
+
+# List of models with keys and values including group
+models = [
+    {"provider": "Alibaba Cloud", "model": "qwen-2.5-32b", "group": "Alibaba Cloud"},
+    {"provider": "Alibaba Cloud", "model": "qwen-2.5-coder-32b", "group": "Alibaba Cloud"},
+    {"provider": "Alibaba Cloud", "model": "qwen-qwq-32b", "group": "Alibaba Cloud"},
+    {"provider": "Alibaba Cloud", "model": "deepseek-r1-distill-qwen-32b", "group": "Alibaba Cloud"},
+    {"provider": "DeepSeek / Meta", "model": "deepseek-r1-distill-llama-70b", "group": "DeepSeek / Meta"},
+    {"provider": "Google", "model": "gemma2-9b-it", "group": "Google"},
+    {"provider": "Hugging Face", "model": "distil-whisper-large-v3-en", "group": "Hugging Face"},
+    {"provider": "Meta", "model": "llama-3.1-8b-instant", "group": "Meta"},
+    {"provider": "Meta", "model": "llama-3.2-11b-vision-preview", "group": "Meta"},
+    {"provider": "Meta", "model": "llama-3.2-1b-preview", "group": "Meta"},
+    {"provider": "Meta", "model": "llama-3.2-3b-preview", "group": "Meta"},
+    {"provider": "Meta", "model": "llama-3.2-90b-vision-preview", "group": "Meta"},
+    {"provider": "Meta", "model": "llama-3.3-70b-specdec", "group": "Meta"},
+    {"provider": "Meta", "model": "llama-3.3-70b-versatile", "group": "Meta"},
+    {"provider": "Meta", "model": "llama-guard-3-8b", "group": "Meta"},
+    {"provider": "Meta", "model": "llama3-70b-8192", "group": "Meta"},
+    {"provider": "Meta", "model": "llama3-8b-8192", "group": "Meta"},
+    {"provider": "Mistral AI", "model": "mistral-saba-24b", "group": "Mistral AI"},
+    {"provider": "Mistral AI", "model": "mixtral-8x7b-32768", "group": "Mistral AI"},
+    {"provider": "OpenAI", "model": "whisper-large-v3", "group": "OpenAI"}
+]
+
+@app.get("/models")
+def get_models():
+    """Return the list of models"""
+    return {"models": models}
+
 # Endpoints
 @app.post("/start-session", response_model=SessionResponse)
 def start_session():
@@ -59,6 +94,13 @@ def start_session():
     session_id = str(uuid.uuid4())
     sessions[session_id] = [system_prompt.copy()]
     return {"session_id": session_id}
+
+@app.post("/update-default-model")
+def update_default_model(request: UpdateDefaultModelRequest):
+    """Update the default model"""
+    global default_model
+    default_model = request.model
+    return {"message": "Default model updated successfully", "default_model": default_model}
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
@@ -77,7 +119,7 @@ def chat(request: ChatRequest):
     try:
         # Get AI response
         response = client.chat.completions.create(
-            model="llama3-70b-8192",
+            model=default_model,
             messages=chat_history,
             max_tokens=100,
             temperature=1.2

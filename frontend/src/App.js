@@ -10,6 +10,7 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [models, setModels] = useState([]); // State to store models
   const messagesEndRef = useRef(null); // To auto-scroll to the latest message
 
   // Start new session
@@ -21,6 +22,26 @@ function App() {
       setError('');
     } catch (err) {
       setError('Failed to start new session');
+    }
+  };
+
+  // Fetch models
+  const fetchModels = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/models');
+      setModels(response.data.models);
+    } catch (err) {
+      setError('Failed to fetch models');
+    }
+  };
+
+  // Handle model selection
+  const handleModelChange = async (e) => {
+    const model = e.target.value;
+    try {
+      await axios.post('http://localhost:8000/update-default-model', { model });
+    } catch (err) {
+      setError('Failed to update default model');
     }
   };
 
@@ -58,9 +79,10 @@ function App() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Initialize session on mount
+  // Initialize session and fetch models on mount
   useEffect(() => {
     startNewSession();
+    fetchModels();
   }, []);
 
   // Restart session
@@ -78,9 +100,20 @@ function App() {
           <div>
             <FaUser size={24} />
           </div>
-          <div>
+          <div className="flex-1">
             <h1 className="text-lg font-semibold">ChatMate</h1>
             <p className="text-sm">How can I assist you today?</p>
+          </div>
+          {/* Models Dropdown */}
+          <div className="w-1/2">
+            <select className="w-full p-2 border border-gray-300 rounded-lg bg-blue-600" defaultValue="" onChange={handleModelChange}>
+              <option value="" disabled>Select your model</option>
+              {models.map((model, index) => (
+                <option key={index} value={model.model}>
+                  {model.model}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
