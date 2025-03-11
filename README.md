@@ -45,10 +45,9 @@ Visit Groq https://console.groq.com/keys  Cloud and sign up or log in
 After logging in, generate an API key
 
 ## Step 8: Configure Environment Variables
-Create a .env file in the project root with the following:
+Add api key on .env file 
 ```
 GROQ_API_KEY="<API KEY>"
-MLFLOW_TRACKING_URI="http://localhost:5000"
 ```
 
 ## Step 9: Run the Backend Server 
@@ -58,7 +57,7 @@ uvicorn main:app --reload
 
 ## Step 10: Test backend API
 ```Using curl:
-bashCopycurl -X POST http://localhost:8000/start-session
+curl -X POST http://localhost:8000/start-session
 Expected response:
 jsonCopy{"session_id": "uuid-here"}
 You can send messages using the session ID.
